@@ -1,17 +1,32 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <div class="sudoku-container">
+      <div class="grid">
+        <Grid />
+      </div>
+      <div class="input-keypad">
+        <InputKeypad />
+      </div>
+    </div>
+    <div class="solve-info">
+      <SolveInfo />
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Grid from "./components/Grid.vue";
+import InputKeypad from "./components/InputKeypad.vue";
+import SolveInfo from "./components/SolveInfo.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Grid,
+    InputKeypad,
+    SolveInfo,
+  },
+};
 </script>
 
 <style>
