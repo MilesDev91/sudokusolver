@@ -11,8 +11,15 @@
       <div v-if="cell.value != ''" class="cell-value">
         {{ cell.value }}
       </div>
-      <div v-else class="cell-value">
-        {{ cell.notes }}
+      <div v-else-if="cell.notes.length > 0" class="cell-notes">
+        <div
+          v-for="note in cell.notes"
+          :key="note"
+          class="note"
+          :class="getNoteClass(note)"
+        >
+          {{ note }}
+        </div>
       </div>
     </div>
   </div>
@@ -46,9 +53,17 @@ export default {
         "current-cell": cell.isCurrentCell,
       };
     },
+    // Return a class based on note properties
+    getNoteClass(note) {
+      return "note" + note;
+    },
     // Change the current cell
     changeCurrentCell(number) {
-      changeCurrentCell(number, this.Grid);
+      changeCurrentCell(
+        number,
+        this.Grid,
+        this.Grid.Cells[this.Grid.currentCell - 1]
+      );
     },
   },
 };
@@ -77,12 +92,20 @@ export default {
   color: black;
 }
 
+.cell-notes {
+  width: 100%;
+  font-size: 1rem;
+  color: black;
+  padding: 0.5rem;
+  position: relative;
+}
+
 .current-cell {
   background-color: rgb(209, 237, 255);
 }
 
 .invalid-cell {
-  background-color: rgb(255, 137, 137);
+  background-color: rgb(255, 181, 181);
 }
 
 .cell-value:hover {
@@ -105,6 +128,48 @@ export default {
 
 .cell:nth-child(n + 46):nth-child(-n + 54) {
   border-bottom: 2px solid black;
+}
+
+/* Conditional cell note styling. It isn't very elegant, but I had to use nine different sub classes so the numbers stay in the same spot every time. */
+
+.note {
+  position: absolute;
+}
+
+.note2 {
+  left: 2.15rem;
+}
+
+.note3 {
+  right: 0.8rem;
+}
+
+.note4 {
+  top: 2rem;
+}
+
+.note5 {
+  top: 2rem;
+  left: 2.15rem;
+}
+
+.note6 {
+  top: 2rem;
+  right: 0.8rem;
+}
+
+.note7 {
+  top: 3.5rem;
+}
+
+.note8 {
+  top: 3.5rem;
+  left: 2.15rem;
+}
+
+.note9 {
+  top: 3.5rem;
+  right: 0.8rem;
 }
 
 /* This is a weird trick to make the height of each cell match the width */

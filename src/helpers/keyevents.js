@@ -5,12 +5,11 @@ export function handleKeyEvents (e, Grid) {
   var selectedCell = Grid.Cells[Grid.currentCell - 1]
 
   // Checks for number which changes cell value
-  if (e.key < 10 && e.key > 0) {
-    if (e.code == ("ControlLeft" || "ControlRight")) {
-      changeCellNotes(e.key, selectedCell)
-    } else {
-      changeCellValue(e.key, Grid, selectedCell);
-    }
+  if (!e.altKey && e.key < 10 && e.key > 0) {
+    changeCellValue(e.key, Grid, selectedCell);
+  }
+  if (e.altKey && e.key < 10 && e.key > 0) {
+    changeCellNotes(e.key, selectedCell)
   }
   // Checks for backspace which clears cell
   if (e.code == "Backspace") {

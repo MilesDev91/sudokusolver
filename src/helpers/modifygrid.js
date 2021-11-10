@@ -17,7 +17,7 @@ export function changeCurrentCell (number, Grid, selectedCell) {
 
   // Set new current cell
   Grid.currentCell = number;
-  selectedCell.setCurrentCell(true);
+  Grid.Cells[Grid.currentCell - 1].setCurrentCell(true);
 }
 // changes the current cell's value
 export function changeCellValue (value, Grid, selectedCell) {
@@ -32,14 +32,21 @@ export function changeCellNotes (value, selectedCell) {
   // Check notes for value and remove if true
   for (let i in selectedCell.notes) {
     if (selectedCell.notes[i] == value) {
-      newCellNotes.splice(i, i)
+      // Check if it is the only note left in array
+      if (selectedCell.notes.length < 2) {
+        // Set notes to a blank array
+        selectedCell.setNotes([])
+        return
+      }
+      // Remove element
+      newCellNotes.splice(i, 1)
       selectedCell.setNotes(newCellNotes)
       return
     }
   }
 
-  // Add value to notes
-  newCellNotes = [...selectedCell.notes]
+  // Add value to notes and sort
   newCellNotes.push(value)
+  newCellNotes.sort()
   selectedCell.setNotes(newCellNotes)
 }
