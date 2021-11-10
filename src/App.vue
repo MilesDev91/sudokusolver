@@ -5,9 +5,10 @@
       <div class="grid">
         <Grid />
       </div>
+      <!--  TODO: Implement an input keypad. This is an optional feature     
       <div class="input-keypad">
         <InputKeypad />
-      </div>
+      </div> -->
     </div>
     <div class="solve-info">
       <SolveInfo />
@@ -17,14 +18,14 @@
 
 <script>
 import Grid from "./components/Grid.vue";
-import InputKeypad from "./components/InputKeypad.vue";
+// import InputKeypad from "./components/InputKeypad.vue";
 import SolveInfo from "./components/SolveInfo.vue";
 
 export default {
   name: "App",
   components: {
     Grid,
-    InputKeypad,
+    // InputKeypad,
     SolveInfo,
   },
 };
@@ -68,13 +69,15 @@ body {
 .sudoku-container {
   border-top: 2px solid black;
   padding-top: 1rem;
-  flex-grow: 2;
+  flex-basis: 70vw;
+  flex-grow: 1;
   position: relative;
 }
 
 .solve-info {
   padding: 0.3rem;
   flex-grow: 1;
+  flex-basis: 30vw;
   background-color: rgb(22, 22, 22);
   border: 2px solid black;
 }

@@ -1,48 +1,54 @@
 <template>
   <div class="grid">
+    <!-- The tabindex property was added to allow for focus highlighting the entire div -->
     <div
       v-for="cell in Grid.Cells"
       :key="cell"
       class="cell"
-      tabindex="0"
+      v-bind:class="getCellClass(cell)"
       @click="changeCurrentCell(cell.number)"
     >
-      <div class="cell-value">{{ cell.value }}</div>
+      <div v-if="cell.value != ''" class="cell-value">
+        {{ cell.value }}
+      </div>
+      <div v-else class="cell-value">
+        {{ cell.notes }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Grid from "../classes/Grid";
+import { handleKeyEvents } from "../helpers/keyevents";
+import { changeCurrentCell } from "../helpers/modifygrid";
 
 export default {
   data() {
     return {
       Grid: new Grid(),
-      currentCell: 1,
     };
   },
   // Checks to see if 1 through 9 are pressed, then calls a function that changes the current cell's value
   created() {
+    // All changes to the grid based on keyboard input are handled here
     window.addEventListener("keydown", (e) => {
-      // Checks for number which changes cell value
-      if (e.key < 10 && e.key > 0) {
-        this.changeCellValue(e.key);
-      }
-      // Checks for backspace which clears cell
-      if (e.code == "Backspace") {
-        this.changeCellValue("");
-      }
+      handleKeyEvents(e, this.Grid);
     });
   },
   methods: {
-    // Change current cell
-    changeCurrentCell(number) {
-      this.currentCell = number;
+    // Returns a class based on cell properties
+    getCellClass(cell) {
+      if (!cell.isValid) {
+        return "invalid-cell";
+      }
+      return {
+        "current-cell": cell.isCurrentCell,
+      };
     },
-    // changes the current cell's value
-    changeCellValue(value) {
-      this.Grid.Cells[this.currentCell - 1].setValue(value);
+    // Change the current cell
+    changeCurrentCell(number) {
+      changeCurrentCell(number, this.Grid);
     },
   },
 };
@@ -50,7 +56,7 @@ export default {
 
 <style scoped>
 .grid {
-  padding: 1rem 15rem 1rem 25rem;
+  padding: 1rem 11rem 1rem 20rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -60,19 +66,30 @@ export default {
   background-color: white;
   width: 10%;
   position: relative;
+  display: flex;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
-  text-align: center;
 }
 
 .cell-value {
-  max-width: 100%;
+  margin: auto;
+  font-size: 3rem;
+  color: black;
+}
+
+.current-cell {
+  background-color: rgb(209, 237, 255);
+}
+
+.invalid-cell {
+  background-color: rgb(255, 137, 137);
+}
+
+.cell-value:hover {
+  cursor: default;
 }
 
 /* Conditional cell styling */
-.cell:focus-within {
-  background-color: rgb(209, 237, 255);
-}
 
 .cell:nth-child(3n) {
   border-right: 2px solid black;

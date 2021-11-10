@@ -3,6 +3,7 @@ import Cell from './Cell'
 export default class Grid {
   constructor() {
     this.numberofCells = 81
+    this.currentCell = 1
     this.Cells = [];
     // To create a sudoku grid, we must construct 81 cells. I have decided to keep row, column, and block properties in the Cell class
 
@@ -35,7 +36,6 @@ export default class Grid {
       colCount = 1
       rowCount++
     }
-    console.log(this.Cells)
   }
   // We check which block a cell should be constructed in here
   #checkBlock (cellCount) {
@@ -77,5 +77,8 @@ export default class Grid {
     if (block9.includes(cellCount)) {
       return 9;
     }
+  }
+  setCurrentCell (number) {
+    this.currentCell = number;
   }
 }
