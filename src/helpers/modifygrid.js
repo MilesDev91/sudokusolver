@@ -21,6 +21,13 @@ export function changeCurrentCell (number, Grid, selectedCell) {
 }
 // changes the current cell's value
 export function changeCellValue (value, Grid, selectedCell) {
+  // If the value is the same as the previous value, delete the value instead
+  if (value == selectedCell.value) {
+    selectedCell.setValue("");
+    updateGridValidity(Grid);
+    return
+  }
+
   selectedCell.setValue(value);
   updateGridValidity(Grid);
 }

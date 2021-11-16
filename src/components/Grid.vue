@@ -26,27 +26,34 @@
 </template>
 
 <script>
-import Grid from "../classes/Grid";
+import { mapState } from "vuex";
 import { handleKeyEvents } from "../helpers/keyevents";
 import { changeCurrentCell } from "../helpers/modifygrid";
 
 export default {
-  data() {
-    return {
-      Grid: new Grid(),
-    };
-  },
+  computed: mapState({
+    Grid: (state) => state.Grid,
+  }),
   // Checks to see if 1 through 9 are pressed, then calls a function that changes the current cell's value
   created() {
     // All changes to the grid based on keyboard input are handled here
-    window.addEventListener("keydown", (e) => {
-      handleKeyEvents(e, this.Grid);
-    });
+    window.addEventListener("keydown", this.keyEvent, false);
+  },
+  unmounted() {
+    window.removeEventListener("keydown", this.keyEvent, false);
   },
   methods: {
+    // Listener event
+    keyEvent(event) {
+      handleKeyEvents(event, this.Grid);
+    },
+
     // Returns a class based on cell properties
     getCellClass(cell) {
-      if (!cell.isValid) {
+      // Mix styles if both current and invalid
+      if (!cell.isValid && cell.isCurrentCell) {
+        return "invalid-current-cell";
+      } else if (!cell.isValid) {
         return "invalid-cell";
       }
       return {
@@ -106,6 +113,10 @@ export default {
 
 .invalid-cell {
   background-color: rgb(255, 181, 181);
+}
+
+.invalid-current-cell {
+  background-color: rgb(237, 201, 251);
 }
 
 .cell-value:hover {

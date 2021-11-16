@@ -3,7 +3,6 @@ import { changeCellValue, changeCurrentCell, changeCellNotes } from "./modifygri
 // Checks key code for key events, returns new current cell at the end
 export function handleKeyEvents (e, Grid) {
   var selectedCell = Grid.Cells[Grid.currentCell - 1]
-
   // Checks for number which changes cell value
   if (!e.altKey && e.key < 10 && e.key > 0) {
     changeCellValue(e.key, Grid, selectedCell);
@@ -13,6 +12,9 @@ export function handleKeyEvents (e, Grid) {
   }
   // Checks for backspace which clears cell
   if (e.code == "Backspace") {
+    if (selectedCell.value == "" && selectedCell.notes.length > 0) {
+      selectedCell.setNotes([])
+    }
     changeCellValue("", Grid, selectedCell);
   }
 
